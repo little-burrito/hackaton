@@ -4,8 +4,6 @@ function markerrender ( )
 {
     if (navigator.geolocation) {
         map.locate();
-        map.markerLayer.setGeoJSON(geoJson);
-        map.fitBounds(map.markerLayer.getBounds());
     }
     setTimeout(markerrender, 1000);
 };
@@ -14,7 +12,7 @@ function markerrender ( )
 // Once we've got a position, zoom and center the map
 // on it, and add a single marker.
 map.on('locationfound', function(e) {
-    map.fitBounds(e.bounds);
+    //map.fitBounds(e.getBounds());
     var geoJson = {
         type: 'FeatureCollection',
         features: [
@@ -31,7 +29,7 @@ map.on('locationfound', function(e) {
             {
                 type: 'Feature',
                 properties: {
-                    title: 'Washington, D.C.',
+                    title: 'Pelle.',
                     'marker-color': '#f00',
                     'marker-size': 'large',
                     url: 'http://en.wikipedia.org/wiki/Washington,_D.C.'
@@ -44,8 +42,8 @@ map.on('locationfound', function(e) {
             {
                 type: 'Feature',
                 properties: {
-                    "title": "Small astronaut",
-                    'marker-color': '#f10',
+                    "title": "kalle",
+                    'marker-color': '#014051',
                     'marker-size': 'large',
                     url: 'http://en.wikipedia.org/wiki/Baltimore'
                 },
@@ -54,23 +52,21 @@ map.on('locationfound', function(e) {
                     coordinates: [e.latlng.lng+0.001, e.latlng.lat -0.001]
                 }
             }]
+
     };
     map.markerLayer.on('click', function(e) {
         e.layer.unbindPopup();
         window.open(e.layer.feature.properties.url);
     });
-    heat = L.heatLayer(geoJson, {maxZoom: 18}).addTo(map);
-    map.addLayer(heat);
-    draw = true;
+    map.markerLayer.setGeoJSON(geoJson);
+    map.fitBounds(map.markerLayer.getBounds());
 });
-
-
-
-
+markerrender();
 
 
 // If the user chooses not to allow their location
 // to be shared, display an error message.
 map.on('locationerror', function() {
-    geolocate.innerHTML = 'position could not be found';
+    alert('position could not be found');
 });
+
